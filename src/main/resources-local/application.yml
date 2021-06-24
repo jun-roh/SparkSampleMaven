@@ -1,0 +1,96 @@
+server:
+  port: 8081
+  tomcat:
+    basedir: log/local
+
+datasource:
+  url: jdbc:log4jdbc:mysql://localhost:3306/Test?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  slave-list:
+    - name: slave_1
+      url: jdbc:log4jdbc:mysql://localhost:3306/Test?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  username: root
+  password: mysql1234
+
+spring:
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    servlet:
+      content-type: text/html
+    encoding: utf-8
+    mode: HTML
+    prefix: classpath:templates/
+    suffix: .html
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:log4jdbc:mysql://localhost:3306/Test?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: mysql1234
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      pool-name: SpringBootJPAHikariCP
+      max-lifetime: 2000000
+      connection-test-query: SELECT 1
+      connection-timeout: 30000
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  devtools:
+    livereload:
+      enabled: true
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+logging:
+  level:
+    org.springframework.jdbc.datasource.SimpleDriverDataSource: DEBUG
+    org.hibernate.SQL: DEBUG
+  file:
+    name: log/local
+management:
+  endpoints:
+    web:
+      base-path: /
+
+  health:
+    redis:
+      enabled: false
+
+
+spark:
+  appname: TestApp
+  props:
+    driver:
+      cores: 1
+      maxResultSize: 1g
+      memory: 1g
+    local:
+      dir: /tmp
+  streaming:
+    duration: 10000
+
+file:
+  gcp:
+    path: src/main/resources/credentials/
+  temps:
+    path: src/main/resources/temps/
+gcp:
+  storage:
+    uri: gs://spark-samples-data/temps/
