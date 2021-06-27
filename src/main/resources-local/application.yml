@@ -94,3 +94,5 @@ file:
 gcp:
   storage:
     uri: gs://spark-samples-data/temps/
+  bucket:
+    name: spark-samples-data
