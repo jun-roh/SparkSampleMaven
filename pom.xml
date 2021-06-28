@@ -1,47 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+
+    <packaging>war</packaging>
     <groupId>com.spark.maven</groupId>
     <artifactId>SparkSampleMaven</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SparkSampleMaven</name>
-    <description>Demo project for Spring Boot</description>
+    <description>SparkSampleMaven</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <properties>
-        <DEPLOY-FILE-NAME>Project</DEPLOY-FILE-NAME>
+
+        <DEPLOY-FILE-NAME>SparkSampleMaven</DEPLOY-FILE-NAME> <!-- 빌드결과물 파일명 -->
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <env>local</env>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
+
+
+    <repositories>
+        <repository>
+            <id>mulesoft-repository</id>
+            <name>Mulesoft Repository for Maven</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <!-- Spring Web Basic -->
+
+        <!-- sql로그를 남기기 위한 라이브러리 -->
+        <dependency>
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>1.16</version>
+        </dependency>
+        <!-- e: DB -->
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- spring security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-- jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <!-- thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.12</version>
         </dependency>
         <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.7</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.12</version>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>9.0.33</version>
+        </dependency>
+        <!-- jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,69 +134,103 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>1.2.8.RELEASE</version>
         </dependency>
-
-        <!-- Spring Thymeleaf -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>nz.net.ultraq.thymeleaf</groupId>
-            <artifactId>thymeleaf-layout-dialect</artifactId>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.thymeleaf.extras</groupId>-->
-        <!--            <artifactId>thymeleaf-extras-springsecurity5</artifactId>-->
-        <!--        </dependency>-->
-
-        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+        </dependency>
+        <!-- java mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- Joda Time -->
+        <!--         <dependency> -->
+        <!--             <groupId>joda-time</groupId> -->
+        <!--             <artifactId>joda-time</artifactId> -->
+        <!--         </dependency> -->
 
-        <!-- Database -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.amazon.redshift/redshift-jdbc42 -->
+        <dependency>
+            <groupId>com.amazon.redshift</groupId>
+            <artifactId>redshift-jdbc42</artifactId>
+            <version>1.2.27.1051</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
-        <!-- JPA Data -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>2.1.3.RELEASE</version>
         </dependency>
-
-        <!-- Logging -->
         <dependency>
-            <groupId>org.bgee.log4jdbc-log4j2</groupId>
-            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-            <version>1.16</version>
+            <groupId>biz.paluch.redis</groupId>
+            <artifactId>lettuce</artifactId>
+            <version>3.5.0.Final</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>javax.servlet</groupId>-->
+        <!--<artifactId>javax.servlet-api</artifactId>-->
+        <!--<version>4.0.1</version>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>be.ceau</groupId>
+            <artifactId>chart</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.5</version>
         </dependency>
 
-        <!-- Spring Security -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security.oauth</groupId>-->
-<!--            <artifactId>spring-security-oauth2</artifactId>-->
-<!--            <version>2.5.1.RELEASE</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry</artifactId>
+            <version>1.7.16</version>
+        </dependency>
 
         <!-- Google cloud service - Big Query-->
         <dependency>
@@ -132,98 +251,10 @@
             <version>28.2-jre</version>
         </dependency>
 
-        <!-- Jackson -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-
-        <!-- JOSN Simple -->
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-
-        <!-- Redis -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>biz.paluch.redis</groupId>
-            <artifactId>lettuce</artifactId>
-            <version>4.1.1.Final</version>
-        </dependency>
-
-
-        <!-- Spark -->
-        <dependency>
-            <groupId>org.codehaus.janino</groupId>
-            <artifactId>janino</artifactId>
-            <version>3.0.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.12</artifactId>
-            <version>3.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.xbean</groupId>
-                    <artifactId>xbean-asm6-shaded</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_2.12</artifactId>
-            <version>3.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming_2.12</artifactId>
-            <version>3.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Apache POI - Microsoft file -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.0.0</version>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
         </dependency>
 
         <!-- lucy-xss-filter -->
@@ -234,10 +265,22 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.141.59</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.20</version>
+        </dependency>
+
     </dependencies>
 
     <build>
